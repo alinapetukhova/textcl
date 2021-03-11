@@ -236,6 +236,10 @@ pdoc3 --html --output-dir docs src/textcl/
 
 where `scr/textcl/` is a path to folder contains __init__.py  
 
+Also documentation can be found [here](https://alinapetukhova.github.io/textcl/docs/).
+
+
+--------------------------------
 To run tests use in the root folder:
 
 ```bash
