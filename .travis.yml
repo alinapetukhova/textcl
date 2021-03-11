@@ -1,4 +1,5 @@
-language: python
+language:
+  python
 python:
 - "3.6"
 - "3.7"
@@ -6,6 +7,10 @@ python:
 # install dependencies
 install:
 - pip install -r src/requirements.txt
+- pip install codecov
 # run tests
 script:
 - pytest
+- coverage run -m pytest
+after_success:
+  - codecov

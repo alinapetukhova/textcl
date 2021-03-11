@@ -1,4 +1,7 @@
 ## TextCL
+[![Build Status](https://travis-ci.com/alinapetukhova/textcl.svg?branch=master)](https://travis-ci.com/github/alinapetukhova/textcl)
+[![codecov](https://codecov.io/gh/alinapetukhova/textcl/branch/master/graph/badge.svg?token=jgYuXyGGjS)](https://codecov.io/gh/alinapetukhova/textcl)
+
 ### Introduction
 This package is aimed to clean text data for later usage in Natural Language Processing tasks. It can be used as an initial step in text analysis, predictive, classification, or text generation models. 
 
@@ -215,11 +218,11 @@ After joining the result DataFrame will look like:
 
 | topic_name | joined_sentences |
 |:----|:----|
-| topic1 | joined_sentences1 |
-| topic1 | joined_sentences2 |
-| topic2 | joined_sentences1 |
-| topic2 | joined_sentences2 |
-| ... | ... |
+| business | James Wareham, a lawyer representing one of t... |
+| entertainment | Singer Ian Brown 'in gig arrest'  Former Stone... |
+| politics | Observers to monitor UK election  Ministers wi... |
+| sport | Referred to in the Netherlands as "the Genera... |
+| tech | Mobile games come of age  The BBC News website... |
 
 
 ---------------------------------
