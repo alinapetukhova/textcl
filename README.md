@@ -1,6 +1,7 @@
 ## TextCL
 [![Build Status](https://travis-ci.com/alinapetukhova/textcl.svg?branch=master)](https://travis-ci.com/github/alinapetukhova/textcl)
 [![codecov](https://codecov.io/gh/alinapetukhova/textcl/branch/master/graph/badge.svg?token=jgYuXyGGjS)](https://codecov.io/gh/alinapetukhova/textcl)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ### Introduction
 This package is aimed to clean text data for later usage in Natural Language Processing tasks. It can be used as an initial step in text analysis, predictive, classification, or text generation models. 
