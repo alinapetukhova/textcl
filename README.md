@@ -1,83 +1,93 @@
-## TextCL
+# TextCL
+
 [![Build Status](https://travis-ci.com/alinapetukhova/textcl.svg?branch=master)](https://travis-ci.com/github/alinapetukhova/textcl)
 [![codecov](https://codecov.io/gh/alinapetukhova/textcl/branch/master/graph/badge.svg?token=jgYuXyGGjS)](https://codecov.io/gh/alinapetukhova/textcl)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### Introduction
-This package is aimed to clean text data for later usage in Natural Language Processing tasks. It can be used as an initial step in text analysis, predictive, classification, or text generation models. 
+## Introduction
 
-The quality of that models strongly depends on the quality of input data. Common problems in the data sets: 
-- If data are coming from the Optical character recognition platform (OCR) the tables and columns formatted text is usually not processed correctly and will add noise to the models. 
-- Some parts of the big texts scopes may contain sentences from different languages rather than the target language of the model and have to be filtered. 
-- When we are working with real word texts we can see that some sentences can be duplicated due to the usage of templates. For the text generation tasks, it can cause the overfitting of the model and duplication in the created texts or summaries. 
-- Data set contains texts, that are different from the main topic (like weather forecaset in the accounting reports)
----------------------------------
-### List of functions
+The **TextCL** package aims to clean text data for later use in Natural Language Processing tasks. It can be used as an initial step in text analysis as well as in predictive, classification or text generation models.
 
-To be albe to solve pre-processing problems **TextCL** package includes following methods: 
-- splitting texts into sentences
-- filtering sentences by language (to remove sentences from text not in the target language)
-- perplexity (to remove linguistically unconnected sentences, that can be produced by OCR modules. Example: *Sustainability Report 2019 36 3%?!353? 1. 5В°C 1} 33%.*)
-- Jaccard similarity (to remove duplicated sentences in the text) 
-- unsupervised outlier detection (to detect texts, that are outside of the main data set topic destribution). It can be applied using one of the modes: 
-    - TONMF (block coordinate descent framework)
-    [source article](https://arxiv.org/pdf/1701.01325.pdf),
-    [matlab implementation](https://github.com/ramkikannan/outliernmf)
-    - RPCA (Robust Principal Component Analysis)
-    [source article](https://arxiv.org/pdf/0912.3599.pdf)
-    [python implementation](https://github.com/dganguli/robust-pca)
-    - Singular value decomposition: Used implementation from numpy: np.linalg.svd
+The quality of the models strongly depends on the quality of the input data. Common problems in the data sets include:
 
-    
----------------------------------
-### Requirements
+- If data are coming from a optical character recognition (OCR) platform, text in tables and columns is usually not processed correctly and will add noise to the models.
+- Some parts of large texts scopes may contain sentences from different languages rather than the target language of the model and have to be filtered out.
+- Real-world texts often have duplicated sentences due to the use of templates. In text generation tasks, this can cause model overfitting and duplications in generated texts or summaries.
+- Data sets may contain text that is different from the main topic, such as a weather forecast in an accounting report.
 
-Python >= 3.6
-- flair>=0.7
-- langdetect>=1.0.8
-- pandas>=1.0.3
-- lxml>=4.6.2
-- protobuf>=3.14.0
-- nltk>=3.4.5
+## Features
 
----------------------------------
-### How to install
+The **TextCL** package allows the user to perform the following text pre-processing tasks:
+
+- Split texts into sentences.
+- Language filtering, for removing sentences from text not in the target language.
+- Perplexity filtering, for removing linguistically unconnected sentences, that can be produced by OCR modules. For example: `Sustainability Report 2019 36 3%?!353? 1. 5В°C 1} 33%.`
+- Duplicate sentences filtering using Jaccard similarity, for removing duplicate sentences from the text.
+- Unsupervised outlier detection for revealing texts that are outside of the main data set topic distribution. Four methods are included with package for this purpose:
+  - TONMF: Block Coordinate Descent Framework
+    ([source article](https://arxiv.org/pdf/1701.01325.pdf),
+    [matlab implementation](https://github.com/ramkikannan/outliernmf))
+  - RPCA: Robust Principal Component Analysis
+    ([source article](https://arxiv.org/pdf/0912.3599.pdf),
+    [python implementation](https://github.com/dganguli/robust-pca))
+  - SVD: Singular Value Decomposition
+    (based on the [NumPy SVD implementation](https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html))
+
+**TextCL**'s API documentation can be found [here](https://alinapetukhova.github.io/textcl/docs/).
+
+## Requirements
+
+- Python >= 3.6
+- flair >= 0.7
+- langdetect >= 1.0.8
+- numpy >= 1.16.5, < 1.20.0
+- pandas >= 1.0.3
+- lxml >= 4.6.2
+- protobuf >= 3.14.0
+- nltk >= 3.4.5
+
+## How to install
+
+### From PyPI
+
+_Soon_
+
+### From source
 
 ```bash
-git clone -b text-processing https://[USER]:[PASS]@github.com/alinapetukhova/textcl.git
+git clone https://github.com/alinapetukhova/textcl.git
 cd textcl
 pip install src/
 ```
 
-`src/` is path to the package folder where file 'setup.py' is located.
+The `src/` folder is where the file `setup.py` is located.
 
----------------------------------
-### Usage examples
+## Usage examples
 
 Load the text data you want to process. It's necessary to have column `text` in the data (default name). If you don't have `text` column you will need to specify the name for **split_into_sentences** function using `text_col` parameter. Source file from this example structured as follows:
 
 |id| topic_name | text |
 |:----|:----|:----|
-| 0   |      business |  WorldCom bosses' $54m payout  Ten former direc...| 
-| 1   |      business |  Profits slide at India's Dr Reddy  Profits at ...| 
-| 2   |      business |  Liberian economy starts to grow  The Liberian ...| 
-| 3   |      business |  Uluslararası Para Fonu (IMF), Liberya ekonomis...| 
-| 4  |  entertainment |  Singer Ian Brown 'in gig arrest'  Former Stone...| 
-| 5  |  entertainment |  Blue beat U2 to top France honour  Irish band ...| 
-| 6  |  entertainment |  Housewives lift Channel 4 ratings  The debut o...| 
-| 7  |  entertainment |  Домохозяйки подняли рейтинги канала 4 Дебют ам...| 
-| 8  |  entertainment |  Housewives Channel 4 reytinglerini yükseltti A...| 
-| 9  |       politics |  Observers to monitor UK election  Ministers wi...| 
-| 10  |      politics |  Lib Dems highlight problem debt  People vulner...| 
-| 11  |      politics |  Minister defends hunting ban law  The law bann...| 
-| 12  |         sport |  Legendary Dutch boss Michels dies  Legendary D...| 
-| 13  |         sport |  Connors boost for British tennis  Former world...| 
-| 14  |         sport |  Sociedad set to rescue Mladenovic  Rangers are...| 
-| 15  |          tech |  Mobile games come of age  The BBC News website...| 
-| 16  |          tech |  PlayStation 3 processor unveiled  The Cell pro...| 
-| 17  |          tech |  PC photo printers challenge printed...| 
-| 18  |          tech |  PC photo printers challenge pros  Home printed...| 
-| 19  |          tech |  Example 43 t6 43 Table data 342 5 3.4. data cl...| 
+| 0   |      business |  WorldCom bosses' $54m payout  Ten former direc...|
+| 1   |      business |  Profits slide at India's Dr Reddy  Profits at ...|
+| 2   |      business |  Liberian economy starts to grow  The Liberian ...|
+| 3   |      business |  Uluslararası Para Fonu (IMF), Liberya ekonomis...|
+| 4  |  entertainment |  Singer Ian Brown 'in gig arrest'  Former Stone...|
+| 5  |  entertainment |  Blue beat U2 to top France honour  Irish band ...|
+| 6  |  entertainment |  Housewives lift Channel 4 ratings  The debut o...|
+| 7  |  entertainment |  Домохозяйки подняли рейтинги канала 4 Дебют ам...|
+| 8  |  entertainment |  Housewives Channel 4 reytinglerini yükseltti A...|
+| 9  |       politics |  Observers to monitor UK election  Ministers wi...|
+| 10  |      politics |  Lib Dems highlight problem debt  People vulner...|
+| 11  |      politics |  Minister defends hunting ban law  The law bann...|
+| 12  |         sport |  Legendary Dutch boss Michels dies  Legendary D...|
+| 13  |         sport |  Connors boost for British tennis  Former world...|
+| 14  |         sport |  Sociedad set to rescue Mladenovic  Rangers are...|
+| 15  |          tech |  Mobile games come of age  The BBC News website...|
+| 16  |          tech |  PlayStation 3 processor unveiled  The Cell pro...|
+| 17  |          tech |  PC photo printers challenge printed...|
+| 18  |          tech |  PC photo printers challenge pros  Home printed...|
+| 19  |          tech |  Example 43 t6 43 Table data 342 5 3.4. data cl...|
 | 20  |          tech |  Janice Dean currently serves as senior meteoro...|
 
 Import the package and pandas:
@@ -99,8 +109,8 @@ Split input texts into sentences:
 split_input_texts_df = textcl.split_into_sentences(input_texts_df)
 ```
 
+### Filtering on language
 
-##### Filtering on language
 ```Python
 split_input_texts_df = textcl.language_filtering(split_input_texts_df, threshold=0.99, language='en')
 ```
@@ -131,7 +141,7 @@ Result:
 
 As we can see texts with id 8 (Turkish), 7 (Russian), 8 (Turkish) were removed.
 
-##### Filtering on Jaccard similarity
+### Filtering on Jaccard similarity
 
 ```Python
 split_input_texts_df = textcl.jaccard_sim_filtering(split_input_texts_df, threshold=0.8)
@@ -161,7 +171,8 @@ Result:
 
 Texts with id=17 was removed as it partially duplicates text with id=18.
 
-##### Filtering on perplexity score
+### Filtering on perplexity score
+
 ```Python
 split_input_texts_df = tp.perplexity_filtering(split_input_texts_df, threshold=5)
 ```
@@ -189,7 +200,7 @@ Result:
 
 Texts with id=19 was removed because sentence `data clear additional 78.0 long-term 43 those)` is not linguistically correct.
 
-##### Outliers filtering for categoty "tech"
+### Outliers filtering for category "tech"
 
 ```Python
 joined_texts = split_input_texts_df[["text", "topic_name"]].drop_duplicates()
@@ -206,7 +217,6 @@ Result:
 
 Texts with id=20 was removed because it describes a person profile instead of tech news.
 
-
 Also sentences grouped by topic can be joined to texts with the same number of sentences in them
 
 ```Python
@@ -215,7 +225,7 @@ joined_texts = textcl.join_sentences_by_topics(split_input_texts_df)
 print("Num texts after joining: {}".format(len(joined_texts)))
 ```
 
-After joining the result DataFrame will look like: 
+After joining the result DataFrame will look like:
 
 | topic_name | joined_sentences |
 |:----|:----|
@@ -225,9 +235,7 @@ After joining the result DataFrame will look like:
 | sport | Referred to in the Netherlands as "the Genera... |
 | tech | Mobile games come of age  The BBC News website... |
 
-
----------------------------------
-### Developer's guide
+## Developers guide
 
 To generate documentation use (it will be placed into the docs folder):
 
@@ -235,19 +243,15 @@ To generate documentation use (it will be placed into the docs folder):
 pdoc3 --html --output-dir docs src/textcl/
 ```
 
-where `scr/textcl/` is a path to folder contains __init__.py  
+where `scr/textcl/` is the folder containing the `__init__.py` file.
 
-Also documentation can be found [here](https://alinapetukhova.github.io/textcl/docs/).
-
-
---------------------------------
-To run tests use in the root folder:
+To perform tests run `pytest` in the root folder:
 
 ```bash
 pytest
 ```
 
-To check tests coverage use:
+To check test coverage, run:
 
 ```bash
 pytest --cov=textcl --cov-report=html
