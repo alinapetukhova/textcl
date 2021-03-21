@@ -7,7 +7,7 @@ python:
 # install dependencies
 install:
 - pip install -r src/requirements.txt
-- pip install codecov
+- pip install codecov pdoc3 pytest pytest-cov
 # run tests
 script:
 - pytest
