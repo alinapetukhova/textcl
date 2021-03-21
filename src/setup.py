@@ -20,7 +20,7 @@ setup(name='textcl',
       python_requires='>=3.6', 
       zip_safe=False,
       classifiers=[
-            'Development Status :: 3 - Beta',
+            'Development Status :: 4 - Beta',
             'Intended Audience :: Developers',
             'Topic :: Scientific/Engineering :: Artificial Intelligence',
             'License :: OSI Approved :: MIT License',

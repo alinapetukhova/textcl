@@ -52,7 +52,9 @@ The **TextCL** package allows the user to perform the following text pre-process
 
 ### From PyPI
 
-_Soon_
+```bash
+pip install textcl
+```
 
 ### From source
 
