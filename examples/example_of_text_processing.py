@@ -7,7 +7,7 @@ SOURCE_FILE_PATH = 'prepared_bbc_dataset.csv'
 input_texts_df = pd.read_csv(SOURCE_FILE_PATH).reset_index()
 print(input_texts_df)
 
-# splitting search results into sentences
+# splitting texts into sentences
 split_input_texts_df = textcl.split_into_sentences(input_texts_df)
 print("Num sentences before filtering: {}".format(len(split_input_texts_df)))
 
