@@ -56,16 +56,11 @@ The **TextCL** package allows the user to perform the following text pre-process
 pip install textcl
 ```
 
-### From source
+### From source/GitHub
 
 ```bash
-git clone https://github.com/alinapetukhova/textcl.git
-cd textcl
-pip install src/
+pip install git+https://github.com/alinapetukhova/textcl.git#egg=textcl
 ```
-
-The `src/` folder is where the file `setup.py` is located.
-
 
 ## Developers guide
 
