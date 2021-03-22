@@ -33,9 +33,11 @@ The **TextCL** package allows the user to perform the following text pre-process
   - SVD: Singular Value Decomposition
     (based on the [NumPy SVD implementation](https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html))
 
-**TextCL**'s API documentation can be found [here](https://alinapetukhova.github.io/textcl/docs/).
+## Documentation
 
-**TextCL**'s Usage examples can be found [here](https://github.com/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb) and [here](https://github.com/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb)
+* [TextCL's API documentation](https://alinapetukhova.github.io/textcl/docs/).
+* [Usage examples for the preprocessing functions](https://github.com/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb).
+* [Usage examples for the outlier detection functions](https://github.com/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb).
 
 ## Requirements
 
@@ -64,21 +66,19 @@ pip install git+https://github.com/alinapetukhova/textcl.git#egg=textcl
 
 ## Developers guide
 
-To generate documentation use (it will be placed into the docs folder):
+Project documentation can be generated with [pdoc3](https://pdoc3.github.io/pdoc/). For example, running the following command in the project's root folder generates the HTML documentation and places it in the `docs` folder:
 
 ```bash
-pdoc3 --html --output-dir docs src/textcl/
+pdoc3 --html --output-dir docs textcl/
 ```
 
-where `scr/textcl/` is the folder containing the `__init__.py` file.
-
-To perform tests run `pytest` in the root folder:
+Running the unit tests requires [pytest](https://docs.pytest.org/en/stable/) and can be done with the following command from the project's root folder:
 
 ```bash
 pytest
 ```
 
-To check test coverage, run:
+To check test coverage, run (requires [pytest-cov](https://pypi.org/project/pytest-cov/)):
 
 ```bash
 pytest --cov=textcl --cov-report=html
