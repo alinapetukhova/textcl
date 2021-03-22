@@ -36,8 +36,8 @@ The **TextCL** package allows the user to perform the following text pre-process
 ## Documentation
 
 * [TextCL's API documentation](https://alinapetukhova.github.io/textcl/docs/)
-* [Tutorial for the preprocessing functions](https://github.com/alinapetukhova/textcl/blob/master/examples/text_preprocessing_tutorial.ipynb)
-* [Tutorial for the outlier detection functions](https://github.com/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_tutorial.ipynb)
+* [Tutorial for the preprocessing functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb)
+* [Tutorial for the outlier detection functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb)
 * [Developer's guide](https://github.com/alinapetukhova/textcl/blob/master/doc/devguide.md)
 
 ## Requirements
@@ -65,6 +65,6 @@ pip install textcl
 pip install git+https://github.com/alinapetukhova/textcl.git#egg=textcl
 ```
 
-### License
+## License
 
 [MIT License](LICENSE)
