@@ -1,5 +1,6 @@
 """
 .. include:: ../README.md
+.. include:: ../doc/devguide.md
 """
 
 from textcl.preprocessing import *

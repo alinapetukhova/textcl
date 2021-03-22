@@ -35,9 +35,10 @@ The **TextCL** package allows the user to perform the following text pre-process
 
 ## Documentation
 
-* [TextCL's API documentation](https://alinapetukhova.github.io/textcl/docs/).
-* [Usage examples for the preprocessing functions](https://github.com/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb).
-* [Usage examples for the outlier detection functions](https://github.com/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb).
+* [TextCL's API documentation](https://alinapetukhova.github.io/textcl/docs/)
+* [Usage examples for the preprocessing functions](https://github.com/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb)
+* [Usage examples for the outlier detection functions](https://github.com/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb)
+* [Developer's guide](https://github.com/alinapetukhova/textcl/blob/master/doc/devguide.md)
 
 ## Requirements
 
@@ -54,34 +55,14 @@ The **TextCL** package allows the user to perform the following text pre-process
 
 ### From PyPI
 
-```bash
+```text
 pip install textcl
 ```
 
 ### From source/GitHub
 
-```bash
+```text
 pip install git+https://github.com/alinapetukhova/textcl.git#egg=textcl
-```
-
-## Developers guide
-
-Project documentation can be generated with [pdoc3](https://pdoc3.github.io/pdoc/). For example, running the following command in the project's root folder generates the HTML documentation and places it in the `docs` folder:
-
-```bash
-pdoc3 --html --output-dir docs textcl/
-```
-
-Running the unit tests requires [pytest](https://docs.pytest.org/en/stable/) and can be done with the following command from the project's root folder:
-
-```bash
-pytest
-```
-
-To check test coverage, run (requires [pytest-cov](https://pypi.org/project/pytest-cov/)):
-
-```bash
-pytest --cov=textcl --cov-report=html
 ```
 
 ### License
