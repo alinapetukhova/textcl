@@ -33,9 +33,12 @@ The **TextCL** package allows the user to perform the following text pre-process
   - SVD: Singular Value Decomposition
     (based on the [NumPy SVD implementation](https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html))
 
-**TextCL**'s API documentation can be found [here](https://alinapetukhova.github.io/textcl/docs/).
+## Documentation
 
-**TextCL**'s Usage examples can be found [here](https://github.com/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb) and [here](https://github.com/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb)
+* [TextCL's API documentation](https://alinapetukhova.github.io/textcl/docs/)
+* [Tutorial for the preprocessing functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb)
+* [Tutorial for the outlier detection functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb)
+* [Developer's guide](https://github.com/alinapetukhova/textcl/blob/master/doc/devguide.md)
 
 ## Requirements
 
@@ -52,43 +55,16 @@ The **TextCL** package allows the user to perform the following text pre-process
 
 ### From PyPI
 
-```bash
+```text
 pip install textcl
 ```
 
-### From source
+### From source/GitHub
 
-```bash
-git clone https://github.com/alinapetukhova/textcl.git
-cd textcl
-pip install src/
+```text
+pip install git+https://github.com/alinapetukhova/textcl.git#egg=textcl
 ```
 
-The `src/` folder is where the file `setup.py` is located.
-
-
-## Developers guide
-
-To generate documentation use (it will be placed into the docs folder):
-
-```bash
-pdoc3 --html --output-dir docs src/textcl/
-```
-
-where `scr/textcl/` is the folder containing the `__init__.py` file.
-
-To perform tests run `pytest` in the root folder:
-
-```bash
-pytest
-```
-
-To check test coverage, run:
-
-```bash
-pytest --cov=textcl --cov-report=html
-```
-
-### License
+## License
 
 [MIT License](LICENSE)
