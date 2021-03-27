@@ -8,7 +8,7 @@ f.close()
 
 setup(name='textcl',
       packages=['textcl'],
-      version='0.1.0',
+      version='0.1.2python setup.py sdist',
       license='MIT',
       description='Text preprocessing package for use in NLP tasks',
       author = 'Alina Petukhova',
