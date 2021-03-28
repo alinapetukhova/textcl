@@ -36,7 +36,7 @@ The **TextCL** package allows the user to perform the following text pre-process
 ## Documentation
 
 * [TextCL's API documentation](https://alinapetukhova.github.io/textcl/docs/)
-* [Tutorial for the preprocessing functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb)
+* [Tutorial for the preprocessing functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/text_preprocessing_tutorial.ipynb)
 * [Developer's guide](https://github.com/alinapetukhova/textcl/blob/master/doc/devguide.md)
 
 ## Requirements
