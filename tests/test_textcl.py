@@ -25,7 +25,7 @@ def test_perplexity_filtering():
                                  'Our work contributes to these Sustainable Development Goals: Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference. From washing glassware to disposing of gloves, everything we do in our labs contributes to our environmental footprint.',
                                  'Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference.']],
                                columns=['topic_name', 'document_id', 'text', 'sentence'])
-    result = perplexity_filtering(input_data, threshold=5)
+    result = perplexity_filtering(input_data, threshold=1000)
     assert result.equals(output_data)
 
 

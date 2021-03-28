@@ -1,12 +1,14 @@
 import pandas as pd
 import re
-from flair.embeddings import FlairEmbeddings
 from langdetect import detect_langs
+import math
+import torch
+from pytorch_pretrained_bert import OpenAIGPTTokenizer, OpenAIGPTLMHeadModel
 import warnings
 warnings.filterwarnings("ignore", '.*future version*')
 
 
-def perplexity_filtering(sentences_df, threshold=5, embeddings="news-forward", sentence_col="sentence"):
+def perplexity_filtering(sentences_df, threshold=1000, sentence_col="sentence"):
     """
     Function used to filter sentences by perplexity
 
@@ -14,7 +16,7 @@ def perplexity_filtering(sentences_df, threshold=5, embeddings="news-forward", s
 
     **Arguments**\n
     `sentences_df` (DataFrame): DataFrame with sentences and which contains *sentence* column.\n
-    `threshold` (int): Perplexity threshold used for filtering. Default value = 5.\n
+    `threshold` (int): Perplexity threshold used for filtering. Default value = 1000.\n
     `embeddings` (String): Pretrained embeddings used for preplexity filtering. Default value = "news-forward".\n
     `sentence_col` (String): Name of the sentence column in data frame. Default value = "sentence".
 
@@ -24,9 +26,20 @@ def perplexity_filtering(sentences_df, threshold=5, embeddings="news-forward", s
     `sentences_df` DataFrame filtered by perplexity.
     """
 
-    model = FlairEmbeddings(embeddings).lm
+    # Load pre-trained model (weights)
+    model = OpenAIGPTLMHeadModel.from_pretrained('openai-gpt')
+    model.eval()
+    # Load pre-trained model tokenizer (vocabulary)
+    tokenizer = OpenAIGPTTokenizer.from_pretrained('openai-gpt')
+
+    def score(sentence):
+        tokenize_input = tokenizer.tokenize(sentence)
+        tensor_input = torch.tensor([tokenizer.convert_tokens_to_ids(tokenize_input)])
+        loss=model(tensor_input, lm_labels=tensor_input)
+        return math.exp(loss.item())
+
     l = list(sentences_df)
-    sentences_df['perplexity'] = sentences_df[sentence_col].apply(lambda x: model.calculate_perplexity(x) if len(re.sub('[^0-9a-zA-Z ]', '', x)) > 0 else -1.0)
+    sentences_df['perplexity'] = sentences_df[sentence_col].apply(lambda x: score(x) if len(re.sub('[^0-9a-zA-Z ]', '', x)) > 0 else -1.0)
     return sentences_df[(sentences_df['perplexity'] <= threshold) & (sentences_df['perplexity'] != - 1.0)][l]
 
 

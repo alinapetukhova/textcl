@@ -37,13 +37,12 @@ The **TextCL** package allows the user to perform the following text pre-process
 
 * [TextCL's API documentation](https://alinapetukhova.github.io/textcl/docs/)
 * [Tutorial for the preprocessing functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/text_preprocessing_example.ipynb)
-* [Tutorial for the outlier detection functions](https://nbviewer.jupyter.org/github/alinapetukhova/textcl/blob/master/examples/outlier_detection_functions_plots_example.ipynb)
 * [Developer's guide](https://github.com/alinapetukhova/textcl/blob/master/doc/devguide.md)
 
 ## Requirements
 
 - Python >= 3.6
-- flair >= 0.7
+- pytorch_pretrained_bert >= 0.6.2
 - langdetect >= 1.0.8
 - numpy >= 1.16.5, < 1.20.0
 - pandas >= 1.0.3

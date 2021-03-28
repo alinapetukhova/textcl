@@ -20,7 +20,7 @@ split_input_texts_df = textcl.jaccard_sim_filtering(split_input_texts_df, thresh
 print("Num sentences after Jaccard sim filtering: {}".format(len(split_input_texts_df)))
 
 # filtering on perplexity score
-split_input_texts_df = textcl.perplexity_filtering(split_input_texts_df, threshold=5)
+split_input_texts_df = textcl.perplexity_filtering(split_input_texts_df, threshold=1000)
 print("Num sentences after perplexity filtering: {}".format(len(split_input_texts_df)))
 
 # outliers filtering

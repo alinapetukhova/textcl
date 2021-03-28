@@ -1,4 +1,4 @@
-flair>=0.7
+pytorch_pretrained_bert>=0.6.2
 langdetect>=1.0.8
 numpy>=1.16.5,<1.20.0
 pandas>=1.0.3
