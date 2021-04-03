@@ -53,6 +53,41 @@ def test_language_filtering():
     assert result.equals(output_data)
 
 
+def test_language_filtering_exception():
+    """
+    To test sentences filtering by language exception if language wasn't detected
+    """
+
+    input_data = pd.DataFrame([['Plastic reduction',
+                                '22',
+                                '123244']],
+                              columns=['topic_name', 'document_id', 'sentence'])
+    with pytest.warns(UserWarning) as record:
+        language_filtering(input_data, threshold=0.99, language='en')
+    assert str(record[0].message.args[0]) == 'Problem with detecting language for the sentence'
+
+
+def test_join_sentences_by_label():
+    """
+    To test sentences joined by label
+    """
+
+    input_data = pd.DataFrame([['Plastic reduction',
+                                '22',
+                                'Our work contributes to these Sustainable Development Goals: Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference. From washing glassware to disposing of gloves, everything we do in our labs contributes to our environmental footprint.',
+                                'Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference.'],
+                               ['Plastic reduction',
+                                '22',
+                                'Our work contributes to these Sustainable Development Goals: Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference. From washing glassware to disposing of gloves, everything we do in our labs contributes to our environmental footprint.',
+                                'Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference.']],
+                              columns=['topic_name', 'document_id', 'text', 'sentence'])
+    output_data = pd.DataFrame([['Plastic reduction',
+                                 'Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference. Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference.']],
+                               columns=['topic_name', 'sentence'])
+    result = join_sentences_by_label(input_data)
+    assert result.equals(output_data)
+
+
 def test_jaccard_sim_filtering():
     """
     To test filtering of very similar sentences by Jaccard similarity. Failure appears\
@@ -216,3 +251,35 @@ def test_svd_result_dimensions():
                               columns=['topic_name', 'document_id', 'text', 'sentence'])
     result_matrix, _ = outlier_detection(input_data, method="svd")
     assert input_data.shape == result_matrix.shape
+
+
+def test_outlier_method_exception():
+    """
+    To test match of outlier matrix dimension resulted from SVD method and bag of words for input sentences dimension.\
+    Failure appears if dimensions are not the same
+    """
+
+    input_data = pd.DataFrame([['Plastic reduction',
+                                '22',
+                                'This is example of the first sentence of the first text. This is example of the second sentence',
+                                'This is example of the first sentence of the first text.'],
+                               ['Plastic reduction',
+                                '22',
+                                'This is example of the first sentence of the first text. This is example of the second sentence',
+                                'This is example of the second sentence of the first text.'],
+                               ['Climate change',
+                                '11',
+                                'This is example of the first sentence of the second text. This is example of the second sentence',
+                                'This is example of the first sentence of the second text.'],
+                               ['Climate change',
+                                '11',
+                                'This is example of the first sentence of the second text. This is example of the second sentence',
+                                'This is example of the second sentence of the second text.']],
+                              columns=['topic_name', 'document_id', 'text', 'sentence'])
+    with pytest.raises(Exception) as execinfo:
+        outlier_detection(input_data, method="wrong_method")
+    assert str(execinfo.value) == 'method should be in list ["tonmf", "rpca", "svd"]'
+
+    with pytest.raises(Exception) as execinfo:
+        outlier_detection(input_data, norm="wrong_norm")
+    assert str(execinfo.value) == 'norm should be in list ["l1", "l2", "max"]'

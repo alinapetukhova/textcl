@@ -69,7 +69,7 @@ def language_filtering(sentences_df, threshold=0.99, language='en', sentence_col
                 if result.lang == language:
                     lang_score = result.prob
         except:
-            lang_score = 0
+            warnings.warn('Problem with detecting language for the sentence')
         return lang_score
 
     l = list(sentences_df)

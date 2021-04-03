@@ -283,12 +283,12 @@ def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_w
             outlier_matrix = _svd(bag_of_words.T)
             outlier_matrix = outlier_matrix.T
         else:
-            throw('method should be in list ["tonmf", "rpca", "svd"]')
+            raise Exception('method should be in list ["tonmf", "rpca", "svd"]')
 
         if norm == "l2" or norm == "l1" or norm == "max":
             _, y_pred = preprocessing.normalize(outlier_matrix, axis=1, norm=norm, return_norm=True)
         else:
-            throw('norm should be in list ["l1", "l2", "max"]')
+            raise Exception('norm should be in list ["l1", "l2", "max"]')
 
         # Z-score method for threshold calculation: https://stackoverflow.com/questions/41290525/outliers-using-rpca
         Z = stats.zscore(y_pred)
