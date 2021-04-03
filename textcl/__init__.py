@@ -3,6 +3,10 @@
 .. include:: ../doc/devguide.md
 """
 
-from textcl.preprocessing import *
-from textcl.outliers_detection import *
+from .preprocessing import split_into_sentences
+from .preprocessing import language_filtering
+from .preprocessing import jaccard_sim_filtering
+from .preprocessing import perplexity_filtering
+from .preprocessing import join_sentences_by_label
+from .outliers_detection import outlier_detection
 

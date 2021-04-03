@@ -50,8 +50,6 @@ def test_language_filtering():
                                  'Sustainability in action Creating a culture of sustainability in the labs At Bayer, we want to innovate new medicines for patients in sustainable ways, and how we work in the lab makes a difference.']],
                                columns=['topic_name', 'document_id', 'text', 'sentence'])
     result = language_filtering(input_data, threshold=0.99, language='en')
-    print(result)
-    print(output_data)
     assert result.equals(output_data)
 
 
@@ -162,13 +160,8 @@ def test_rpca_implementation_result_dimensions():
                                 'This is example of the first sentence of the second text. This is example of the second sentence',
                                 'This is example of the second sentence of the second text.']],
                               columns=['topic_name', 'document_id', 'text', 'sentence'])
-    vectorizer = CountVectorizer()
-    bag_of_words = vectorizer.fit_transform(input_data['sentence']).todense()
-    result_matrix = rpca_implementation(bag_of_words)
-    print(len(input_data))
-    print(len(result_matrix))
-    print(bag_of_words.shape)
-    assert bag_of_words.shape == result_matrix.shape
+    result_matrix, _ = outlier_detection(input_data, method="rpca")
+    assert input_data.shape == result_matrix.shape
 
 
 def test_tonmf_result_dimensions():
@@ -194,13 +187,8 @@ def test_tonmf_result_dimensions():
                                 'This is example of the first sentence of the second text. This is example of the second sentence',
                                 'This is example of the second sentence of the second text.']],
                               columns=['topic_name', 'document_id', 'text', 'sentence'])
-    vectorizer = CountVectorizer()
-    bag_of_words = vectorizer.fit_transform(input_data['sentence']).todense()
-    result_matrix, _, _, _ = tonmf(bag_of_words, k=3, alpha=1, beta=0.5)
-    print(len(input_data))
-    print(len(result_matrix))
-    print(bag_of_words.shape)
-    assert bag_of_words.shape == result_matrix.shape
+    result_matrix, _ = outlier_detection(input_data, method="tonmf", k=3, alpha=1, beta=0.5)
+    assert input_data.shape == result_matrix.shape
 
 
 def test_svd_result_dimensions():
@@ -226,10 +214,5 @@ def test_svd_result_dimensions():
                                 'This is example of the first sentence of the second text. This is example of the second sentence',
                                 'This is example of the second sentence of the second text.']],
                               columns=['topic_name', 'document_id', 'text', 'sentence'])
-    vectorizer = CountVectorizer()
-    bag_of_words = vectorizer.fit_transform(input_data['sentence']).todense()
-    result_matrix = svd(bag_of_words)
-    print(len(input_data))
-    print(len(result_matrix))
-    print(bag_of_words.shape)
-    assert bag_of_words.shape == result_matrix.shape
+    result_matrix, _ = outlier_detection(input_data, method="svd")
+    assert input_data.shape == result_matrix.shape

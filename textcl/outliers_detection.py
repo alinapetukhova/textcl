@@ -8,7 +8,7 @@ from nltk.corpus import stopwords
 from scipy import stats
 
 
-class R_pca:
+class _R_pca:
     """
     RPCA implementation from [this](https://github.com/dganguli/robust-pca) source
     """
@@ -70,7 +70,7 @@ class R_pca:
 
 
 # function to use rpca
-def rpca_implementation(bag_of_words):
+def _rpca_implementation(bag_of_words):
     """
     Function to use RPCA for getting outlier_matrix. It uses [this](https://github.com/dganguli/robust-pca) RPCA implementation
 
@@ -85,12 +85,12 @@ def rpca_implementation(bag_of_words):
     `outlier_matrix` (array of shape (n_documents, n_words)): outliers matrix.
     """
 
-    rpca = R_pca(np.array(bag_of_words))
+    rpca = _R_pca(np.array(bag_of_words))
     _, outlier_matrix = rpca.fit(max_iter=10000, iter_print=100)
     return outlier_matrix
 
 
-def tonmf(A, k, alpha, beta):
+def _tonmf(A, k, alpha, beta):
     """
     Function to use TONMF for getting outlier_matrix. Solves the equation
     A = ||A-Z-WH||_F^2 + alpha ||Z||_2,1 + beta ||H||_1
@@ -135,7 +135,7 @@ def tonmf(A, k, alpha, beta):
         Z = np.divide(D, colnormdi)
         Z = np.array(Z) * np.array(colnormdi_factor)
         D = A-Z
-        W, H, _ = hals(D, W, H, k, 1e-6, numIterationsWH, beta)
+        W, H, _ = _hals(D, W, H, k, 1e-6, numIterationsWH, beta)
         D = A-np.dot(W, H)
         if currentIteration > 1:
             prevErr = currentErr
@@ -146,7 +146,7 @@ def tonmf(A, k, alpha, beta):
     return Z, W, H, errChange
 
 
-def hals(A, Winit, Hinit, k, tolerance, numIterations, beta):
+def _hals(A, Winit, Hinit, k, tolerance, numIterations, beta):
     """
     Function to minimize F(W,H) with respect to each column of W and H.
     solves A=WH
@@ -212,7 +212,7 @@ def hals(A, Winit, Hinit, k, tolerance, numIterations, beta):
     return W, H, errChange
 
 
-def svd(bag_of_words):
+def _svd(bag_of_words):
     """
     Function to use SVD for getting outlier_matrix. It uses SVD from np.linalg and result representation\
     from the paper [Outlier Detection for Text Data: An Extended Version](https://arxiv.org/pdf/1701.01325.pdf) (page 8)
@@ -233,7 +233,7 @@ def svd(bag_of_words):
     return outlier_matrix
 
 
-def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_words_lang="english", Z_threshold=3, label_col="topic_name", text_col="text"):
+def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_words_lang="english", Z_threshold=3, label_col="topic_name", text_col="text", k=10, alpha=10, beta=0.05):
     """
     Function used to detect outliers in list of texts
 
@@ -252,6 +252,9 @@ def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_w
     `stop_words_lang` (String): Language for the stop words filtering. Default value = "english".\n
     `label_col` (String): Name of the label column in data frame. Default value = "topic_name".\n
     `text_col` (String): Name of the text column in data frame. Default value = "text".\n
+    `k` (int): rank for tonmf.\n
+    `alpha` (float): defines the weight for the outlier matrix Z for tonmf.\n
+    `beta` (float): approximation parameter for tonmf.
 
     ---
 
@@ -273,11 +276,11 @@ def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_w
         bag_of_words = CountVectorizer().fit_transform(split_search_results_df[split_search_results_df[label_col] == topic]['words']).todense()
 
         if method == 'rpca':
-            outlier_matrix = rpca_implementation(bag_of_words)
+            outlier_matrix = _rpca_implementation(bag_of_words)
         elif method == 'tonmf':
-            outlier_matrix, _, _, _ = tonmf(bag_of_words, k=10, alpha=10, beta=0.05)
+            outlier_matrix, _, _, _ = _tonmf(bag_of_words, k, alpha, beta)
         elif method == 'svd':
-            outlier_matrix = svd(bag_of_words.T)
+            outlier_matrix = _svd(bag_of_words.T)
             outlier_matrix = outlier_matrix.T
         else:
             throw('method should be in list ["tonmf", "rpca", "svd"]')
