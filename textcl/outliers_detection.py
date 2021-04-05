@@ -70,7 +70,7 @@ class _R_pca:
 
 
 # function to use rpca
-def _rpca_implementation(bag_of_words):
+def rpca_implementation(bag_of_words):
     """
     Function to use RPCA for getting outlier_matrix. It uses [this](https://github.com/dganguli/robust-pca) RPCA implementation
 
@@ -90,7 +90,7 @@ def _rpca_implementation(bag_of_words):
     return outlier_matrix
 
 
-def _tonmf(A, k, alpha, beta):
+def tonmf(A, k, alpha, beta):
     """
     Function to use TONMF for getting outlier_matrix. Solves the equation
     A = ||A-Z-WH||_F^2 + alpha ||Z||_2,1 + beta ||H||_1
@@ -212,7 +212,7 @@ def _hals(A, Winit, Hinit, k, tolerance, numIterations, beta):
     return W, H, errChange
 
 
-def _svd(bag_of_words):
+def svd(bag_of_words):
     """
     Function to use SVD for getting outlier_matrix. It uses SVD from np.linalg and result representation\
     from the paper [Outlier Detection for Text Data: An Extended Version](https://arxiv.org/pdf/1701.01325.pdf) (page 8)
@@ -276,11 +276,11 @@ def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_w
         bag_of_words = CountVectorizer().fit_transform(split_search_results_df[split_search_results_df[label_col] == topic]['words']).todense()
 
         if method == 'rpca':
-            outlier_matrix = _rpca_implementation(bag_of_words)
+            outlier_matrix = rpca_implementation(bag_of_words)
         elif method == 'tonmf':
-            outlier_matrix, _, _, _ = _tonmf(bag_of_words, k, alpha, beta)
+            outlier_matrix, _, _, _ = tonmf(bag_of_words, k, alpha, beta)
         elif method == 'svd':
-            outlier_matrix = _svd(bag_of_words.T)
+            outlier_matrix = svd(bag_of_words.T)
             outlier_matrix = outlier_matrix.T
         else:
             raise Exception('method should be in list ["tonmf", "rpca", "svd"]')
