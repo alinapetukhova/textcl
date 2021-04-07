@@ -1,8 +1,8 @@
-torch>=1.5.0,<=1.7.1
+numpy>=1.16.5,<1.20.0
 pandas>=1.0.3
+torch>=1.5.0,<=1.7.1
 pytorch_pretrained_bert>=0.6.2
 langdetect>=1.0.8
-numpy>=1.16.5,<1.20.0
 lxml>=4.6.2
 protobuf>=3.14.0
 nltk>=3.4.5
