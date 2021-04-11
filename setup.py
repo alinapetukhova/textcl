@@ -6,11 +6,16 @@ for line in f:
     req.append(line.strip())
 f.close()
 
+with open("README.md", "r") as fh:
+      long_description = fh.read()
+
 setup(name='textcl',
       packages=['textcl'],
       version='0.1.3',
       license='MIT',
       description='Text preprocessing package for use in NLP tasks',
+      long_description=long_description,
+      long_description_content_type='text/markdown',
       author = 'Alina Petukhova',
       author_email = 'petukhova.alina@gmail.com',
       url = 'https://github.com/alinapetukhova/textcl',
