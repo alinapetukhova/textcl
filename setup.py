@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setup(name='textcl',
       packages=['textcl'],
-      version='0.1.3',
+      version='1.0.0',
       license='MIT',
       description='Text preprocessing package for use in NLP tasks',
       long_description=long_description,
