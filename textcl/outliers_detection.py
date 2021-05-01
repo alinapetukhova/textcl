@@ -237,20 +237,20 @@ def svd(bag_of_words):
     return outlier_matrix
 
 
-def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_words_lang="english", Z_threshold=3, label_col="topic_name", text_col="text", k=10, alpha=10, beta=0.05):
+def outlier_detection(split_df, method="tonmf", norm="l2", stop_words_lang="english", Z_threshold=3, label_col="topic_name", text_col="text", k=10, alpha=10, beta=0.05):
     """
     Function used to detect outliers in list of texts
 
     ---
 
     **Arguments**\n
-    `split_search_results_df` (DataFrame): DataFrame with search results split on sentences and which contains\
+    `split_df` (DataFrame): DataFrame with search results split on sentences and which contains\
     *topic_name*, *document_id*, *text*, *sentence*.\n
-    `method` (string): name of method to use for outlier detection. It should be 'rpca', 'tonmf' or 'svd'.\
+    `method` (String): name of method to use for outlier detection. It should be 'rpca', 'tonmf' or 'svd'.\
     Default value = 'tonmf'. [This](https://github.com/dganguli/robust-pca) RPCA implementation is used. Python\
     implementation of TONMF based on [Outlier Detection for Text Data: An Extended Version](https://arxiv.org/pdf/1701.01325.pdf)\
     is used.\n
-    `norm` (string): the norm to use to normalize. It should be 'l1', 'l2' or 'max'. Default value = 'l2'.\
+    `norm` (String): the norm to use to normalize. It should be 'l1', 'l2' or 'max'. Default value = 'l2'.\
     sklearn.preprocessing.normalize is used.\n
     `Z_threshold` (int): Threshold to filter outlier Z score. Default value = 3.\n
     `stop_words_lang` (String): Language for the stop words filtering. Default value = "english".\n
@@ -263,21 +263,20 @@ def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_w
     ---
 
     **Returns**\n
-    `normal_texts_df` (DataFrame): DataFrame which contains *topic_name*, *document_id*, *text*, *sentence*.\n
-    `outlier_texts_df` (DataFrame): DataFrame which contains *topic_name*, *document_id*, *text*, *sentence*.
+    `normal_df` (DataFrame): DataFrame of texts without outliers which contains *topic_name*, *document_id*, *text*, *sentence*.\n
+    `outlier_df` (DataFrame): DataFrame with outliers which contains *topic_name*, *document_id*, *text*, *sentence*.
     """
 
     nltk.download('stopwords')
     stop = stopwords.words(stop_words_lang)
 
-    split_search_results_df['words'] = split_search_results_df[text_col].apply(
+    split_df['words'] = split_df[text_col].apply(
         lambda x: ' '.join([word for word in x.split() if word.lower() not in stop]))
 
-    for topic in split_search_results_df[label_col].unique():
-        # prepared_input_texts_df = split_search_results_df[split_search_results_df['topic_name'] == topic].copy()
+    for topic in split_df[label_col].unique():
 
         # getting bag_of_words
-        bag_of_words = CountVectorizer().fit_transform(split_search_results_df[split_search_results_df[label_col] == topic]['words']).todense()
+        bag_of_words = CountVectorizer().fit_transform(split_df[split_df[label_col] == topic]['words']).todense()
 
         if method == 'rpca':
             outlier_matrix = rpca_implementation(bag_of_words)
@@ -296,7 +295,7 @@ def outlier_detection(split_search_results_df, method="tonmf", norm="l2", stop_w
 
         # Z-score method for threshold calculation: https://stackoverflow.com/questions/41290525/outliers-using-rpca
         Z = stats.zscore(y_pred)
-        split_search_results_df.loc[(split_search_results_df[label_col] == topic),'Z_score'] = np.abs(Z)
+        split_df.loc[(split_df[label_col] == topic),'Z_score'] = np.abs(Z)
 
-    split_search_results_df['Z_score'] = split_search_results_df['Z_score'].fillna(0)
-    return split_search_results_df[split_search_results_df['Z_score'] <= Z_threshold], split_search_results_df[split_search_results_df['Z_score'] > Z_threshold]
+    split_df['Z_score'] = split_df['Z_score'].fillna(0)
+    return split_df[split_df['Z_score'] <= Z_threshold], split_df[split_df['Z_score'] > Z_threshold]

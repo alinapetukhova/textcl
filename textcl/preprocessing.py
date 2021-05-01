@@ -21,13 +21,12 @@ def perplexity_filtering(sentences_df, threshold=1000, sentence_col="sentence"):
     **Arguments**\n
     `sentences_df` (DataFrame): DataFrame with sentences and which contains *sentence* column.\n
     `threshold` (int): Perplexity threshold used for filtering. Default value = 1000.\n
-    `embeddings` (String): Pretrained embeddings used for preplexity filtering. Default value = "news-forward".\n
     `sentence_col` (String): Name of the sentence column in data frame. Default value = "sentence".
 
     ---
 
     **Returns**\n
-    `sentences_df` DataFrame filtered by perplexity.
+    `sentences_df` (DataFrame): DataFrame filtered by perplexity.
     """
 
     # Load pre-trained model (weights)
@@ -56,13 +55,13 @@ def language_filtering(sentences_df, threshold=0.99, language='en', sentence_col
     **Arguments**\n
     `sentences_df` (DataFrame): DataFrame with sentences and which contains *sentence* column. \n
     `threshold` (float): Language score threshold used for filtering. Default value = 0.99. \n
-    `language` (str, optional): Language of sentences. Default value = 'en'. \n
+    `language` (String, optional): Language of sentences. Default value = 'en'. \n
     `sentence_col` (String): Name of the sentence column in data frame. Default value = "sentence".
 
     ---
 
     **Returns**\n
-    `sentences_df` DataFrame filtered by language.
+    `sentences_df` (DataFrame): DataFrame filtered by language.
     """
 
     def language_score(sentence, language = language):
@@ -95,7 +94,7 @@ def jaccard_sim_filtering(sentences_df, sentece_col="sentence", threshold=0.8):
     ---
 
     **Returns**\n
-    `sentences_df` filtered by Jaccard similarity.
+    `sentences_df` (DataFrame): DataFrame filtered by Jaccard similarity.
     """
 
     sentence_set_list = sentences_df[sentece_col].str.split(' ').apply(lambda x: set(x)).values
@@ -126,7 +125,7 @@ def join_sentences_by_label(grouped_sentences_df, label_col="topic_name", senten
     ---
 
     **Returns**\n
-    `joined_df`: DataFrame with columns *label_column_name*, *joined_sentences*.
+    `joined_df` (DataFrame): DataFrame with columns *label_column_name*, *joined_sentences*.
     """
 
     return grouped_sentences_df.groupby([label_col])[sentence_col].apply(' '.join).reset_index()
@@ -144,7 +143,7 @@ def split_into_sentences(text_df, text_col="text", sentence_col="sentence"):
     `sentence_col` (String): Name of the sentence column in data frame. Default value = "sentence".\n
 
     **Returns**\n
-    `split_text_df` with the same structure as text_df and *sentence* columns.
+    `text_df` (DataFrame): DataFrame with the same structure as text_df and with *sentence* columns.
     """
     text_df[sentence_col] = text_df[text_col].str.strip().replace(r'\s*•', '.').str.split(r'(?<=[.!?…]) ')
     return text_df.explode(sentence_col).reset_index(drop = True)
