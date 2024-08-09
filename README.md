@@ -1,6 +1,6 @@
 # TextCL
 
-[![Build Status](https://travis-ci.com/alinapetukhova/textcl.svg?branch=master)](https://travis-ci.com/github/alinapetukhova/textcl)
+[![Python CI](https://github.com/alinapetukhova/textcl/actions/workflows/main.yml/badge.svg)](https://github.com/alinapetukhova/textcl/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/alinapetukhova/textcl/branch/master/graph/badge.svg?token=jgYuXyGGjS)](https://codecov.io/gh/alinapetukhova/textcl)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
