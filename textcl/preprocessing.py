@@ -2,7 +2,6 @@
 This module contains functions for general text preprocessing and filtering.
 """
 
-import pandas as pd
 import re
 from langdetect import detect_langs
 import math
