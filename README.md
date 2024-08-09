@@ -41,11 +41,11 @@ The **TextCL** package allows the user to perform the following text pre-process
 
 ## Requirements
 
-- Python >= 3.6
+- Python >= 3.9
 - pytorch_pretrained_bert >= 0.6.2
 - langdetect >= 1.0.8
-- numpy >= 1.16.5, < 1.20.0
-- pandas >= 1.0.3
+- numpy >= 1.21.3
+- pandas >= 1.4.3
 - lxml >= 4.6.2
 - protobuf >= 3.14.0
 - nltk >= 3.4.5

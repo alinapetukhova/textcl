@@ -47,7 +47,7 @@ class _R_pca:
 
     def fit(self, tol=None, max_iter=1000, iter_print=100):
         iter = 0
-        err = np.Inf
+        err = np.inf
         Sk = self.S
         Yk = self.Y
         Lk = np.zeros(self.D.shape)
