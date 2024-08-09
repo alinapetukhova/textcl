@@ -41,7 +41,7 @@ The **TextCL** package allows the user to perform the following text pre-process
 
 ## Requirements
 
-- Python >= 3.9
+- Python >= 3.8
 - pytorch_pretrained_bert >= 0.6.2
 - langdetect >= 1.0.8
 - numpy >= 1.21.3
