@@ -16,6 +16,7 @@ class _R_pca:
     """
     RPCA implementation from [this](https://github.com/dganguli/robust-pca) source
     """
+
     def __init__(self, D, mu=None, lmbda=None):
         self.D = D
         self.S = np.zeros(self.D.shape)
@@ -35,7 +36,7 @@ class _R_pca:
 
     @staticmethod
     def frobenius_norm(M):
-        return np.linalg.norm(M, ord='fro')
+        return np.linalg.norm(M, ord="fro")
 
     @staticmethod
     def shrink(M, tau):
@@ -55,16 +56,18 @@ class _R_pca:
         if tol:
             _tol = tol
         else:
-            _tol = 1E-7 * self.frobenius_norm(self.D)
+            _tol = 1e-7 * self.frobenius_norm(self.D)
 
-        #this loop implements the principal component pursuit (PCP) algorithm
-        #located in the table on page 29 of https://arxiv.org/pdf/0912.3599.pdf
+        # this loop implements the principal component pursuit (PCP) algorithm
+        # located in the table on page 29 of https://arxiv.org/pdf/0912.3599.pdf
         while (err > _tol) and iter < max_iter:
             Lk = self.svd_threshold(
-                self.D - Sk + self.mu_inv * Yk, self.mu_inv)                            #this line implements step 3
+                self.D - Sk + self.mu_inv * Yk, self.mu_inv
+            )  # this line implements step 3
             Sk = self.shrink(
-                self.D - Lk + (self.mu_inv * Yk), self.mu_inv * self.lmbda)             #this line implements step 4
-            Yk = Yk + self.mu * (self.D - Lk - Sk)                                      #this line implements step 5
+                self.D - Lk + (self.mu_inv * Yk), self.mu_inv * self.lmbda
+            )  # this line implements step 4
+            Yk = Yk + self.mu * (self.D - Lk - Sk)  # this line implements step 5
             err = self.frobenius_norm(self.D - Lk - Sk)
             iter += 1
 
@@ -125,28 +128,32 @@ def tonmf(A, k, alpha, beta):
     # first fix W,H and solve Z
     W = np.random.random((m, k)).reshape([k, m]).T
     H = np.random.random((k, n)).reshape([n, k]).T
-    D = A-np.dot(W, H)
+    D = A - np.dot(W, H)
     currentIteration = 1
     Z = np.zeros((m, n))
-    prevErr = np.linalg.norm(D, ord='fro') + beta*np.linalg.norm(H, ord=1)
-    currentErr = prevErr-1
-    errChange = np.zeros((numIterations+1, 1))
+    prevErr = np.linalg.norm(D, ord="fro") + beta * np.linalg.norm(H, ord=1)
+    currentErr = prevErr - 1
+    errChange = np.zeros((numIterations + 1, 1))
     # convergence is when A \approx WH
     while currentIteration < numIterations:
-        colnormdi = np.sqrt(np.sum(np.square(D), axis = 0))
-        colnormdi_factor = colnormdi-alpha
+        colnormdi = np.sqrt(np.sum(np.square(D), axis=0))
+        colnormdi_factor = colnormdi - alpha
         colnormdi_factor[colnormdi_factor < 0] = 0
         Z = np.divide(D, colnormdi)
         Z = np.array(Z) * np.array(colnormdi_factor)
-        D = A-Z
+        D = A - Z
         W, H, _ = _hals(D, W, H, k, 1e-6, numIterationsWH, beta)
-        D = A-np.dot(W, H)
+        D = A - np.dot(W, H)
         if currentIteration > 1:
             prevErr = currentErr
         errChange[currentIteration] = prevErr
-        currentErr = np.linalg.norm(D-Z, ord='fro') + alpha * np.sum(np.sqrt(np.sum(np.square(Z)))) + beta * np.linalg.norm(H, ord=1)
+        currentErr = (
+            np.linalg.norm(D - Z, ord="fro")
+            + alpha * np.sum(np.sqrt(np.sum(np.square(Z))))
+            + beta * np.linalg.norm(H, ord=1)
+        )
         currentIteration = currentIteration + 1
-    errChange[currentIteration]=currentErr
+    errChange[currentIteration] = currentErr
     return Z, W, H, errChange
 
 
@@ -182,11 +189,11 @@ def _hals(A, Winit, Hinit, k, tolerance, numIterations, beta):
     """
     W = Winit
     H = Hinit
-    prevError = np.linalg.norm(A-np.dot(W, H), ord='fro')
-    currError = prevError+1
+    prevError = np.linalg.norm(A - np.dot(W, H), ord="fro")
+    currError = prevError + 1
     currentIteration = 1
-    errChange = np.zeros((1, numIterations+1))[0]
-    while abs(currError-prevError) > tolerance and currentIteration < numIterations:
+    errChange = np.zeros((1, numIterations + 1))[0]
+    while abs(currError - prevError) > tolerance and currentIteration < numIterations:
         # update W
         AHt = np.dot(A, np.transpose(H))
         HHt = np.dot(H, np.transpose(H))
@@ -194,7 +201,11 @@ def _hals(A, Winit, Hinit, k, tolerance, numIterations, beta):
         HHtDiag = np.array(np.diag(HHt))
         HHtDiag[HHtDiag == 0] = np.finfo(float).eps
         for x in range(0, k, 1):
-            Wx = W[:, x] + (np.array(np.transpose(AHt[:, x]))[0]-np.dot(W, HHt[:, x]))/HHtDiag[x]
+            Wx = (
+                W[:, x]
+                + (np.array(np.transpose(AHt[:, x]))[0] - np.dot(W, HHt[:, x]))
+                / HHtDiag[x]
+            )
             Wx[Wx < np.finfo(float).eps] = np.finfo(float).eps
             W[:, x] = Wx
         # update H
@@ -204,15 +215,15 @@ def _hals(A, Winit, Hinit, k, tolerance, numIterations, beta):
         WtWDiag = np.array(np.diag(WtW))
         WtWDiag[WtWDiag == 0] = np.finfo(float).eps
         for x in range(0, k, 1):
-            Hx = H[x, :] + (np.array(WtA[x, :])-np.dot(WtW[x, :], H))/WtWDiag[x]
-            Hx = Hx-beta/WtWDiag[x]
+            Hx = H[x, :] + (np.array(WtA[x, :]) - np.dot(WtW[x, :], H)) / WtWDiag[x]
+            Hx = Hx - beta / WtWDiag[x]
             Hx[Hx < np.finfo(float).eps] = np.finfo(float).eps
             H[x, :] = Hx
         if currentIteration > 1:
             prevError = currError
         errChange[currentIteration] = prevError
-        currError = np.linalg.norm(A-np.dot(W, H), ord='fro')
-        currentIteration = currentIteration+1
+        currError = np.linalg.norm(A - np.dot(W, H), ord="fro")
+        currentIteration = currentIteration + 1
     return W, H, errChange
 
 
@@ -237,7 +248,18 @@ def svd(bag_of_words):
     return outlier_matrix
 
 
-def outlier_detection(split_df, method="tonmf", norm="l2", stop_words_lang="english", Z_threshold=3, label_col="topic_name", text_col="text", k=10, alpha=10, beta=0.05):
+def outlier_detection(
+    split_df,
+    method="tonmf",
+    norm="l2",
+    stop_words_lang="english",
+    Z_threshold=3,
+    label_col="topic_name",
+    text_col="text",
+    k=10,
+    alpha=10,
+    beta=0.05,
+):
     """
     Function used to detect outliers in list of texts
 
@@ -267,35 +289,45 @@ def outlier_detection(split_df, method="tonmf", norm="l2", stop_words_lang="engl
     `outlier_df` (DataFrame): DataFrame with outliers which contains *topic_name*, *document_id*, *text*, *sentence*.
     """
 
-    nltk.download('stopwords')
+    nltk.download("stopwords")
     stop = stopwords.words(stop_words_lang)
 
-    split_df['words'] = split_df[text_col].apply(
-        lambda x: ' '.join([word for word in x.split() if word.lower() not in stop]))
+    split_df["words"] = split_df[text_col].apply(
+        lambda x: " ".join([word for word in x.split() if word.lower() not in stop])
+    )
 
     for topic in split_df[label_col].unique():
 
         # getting bag_of_words
-        bag_of_words = CountVectorizer().fit_transform(split_df[split_df[label_col] == topic]['words']).todense()
+        bag_of_words = (
+            CountVectorizer()
+            .fit_transform(split_df[split_df[label_col] == topic]["words"])
+            .todense()
+        )
 
-        if method == 'rpca':
+        if method == "rpca":
             outlier_matrix = rpca_implementation(bag_of_words)
-        elif method == 'tonmf':
+        elif method == "tonmf":
             outlier_matrix, _, _, _ = tonmf(bag_of_words, k, alpha, beta)
-        elif method == 'svd':
+        elif method == "svd":
             outlier_matrix = svd(bag_of_words.T)
             outlier_matrix = outlier_matrix.T
         else:
             raise Exception('method should be in list ["tonmf", "rpca", "svd"]')
 
         if norm == "l2" or norm == "l1" or norm == "max":
-            _, y_pred = preprocessing.normalize(outlier_matrix, axis=1, norm=norm, return_norm=True)
+            _, y_pred = preprocessing.normalize(
+                outlier_matrix, axis=1, norm=norm, return_norm=True
+            )
         else:
             raise Exception('norm should be in list ["l1", "l2", "max"]')
 
         # Z-score method for threshold calculation: https://stackoverflow.com/questions/41290525/outliers-using-rpca
         Z = stats.zscore(y_pred)
-        split_df.loc[(split_df[label_col] == topic),'Z_score'] = np.abs(Z)
+        split_df.loc[(split_df[label_col] == topic), "Z_score"] = np.abs(Z)
 
-    split_df['Z_score'] = split_df['Z_score'].fillna(0)
-    return split_df[split_df['Z_score'] <= Z_threshold], split_df[split_df['Z_score'] > Z_threshold]
+    split_df["Z_score"] = split_df["Z_score"].fillna(0)
+    return (
+        split_df[split_df["Z_score"] <= Z_threshold],
+        split_df[split_df["Z_score"] > Z_threshold],
+    )
