@@ -317,7 +317,7 @@ def outlier_detection(
 
         if norm == "l2" or norm == "l1" or norm == "max":
             _, y_pred = preprocessing.normalize(
-                outlier_matrix, axis=1, norm=norm, return_norm=True
+                np.array(outlier_matrix), axis=1, norm=norm, return_norm=True
             )
         else:
             raise Exception('norm should be in list ["l1", "l2", "max"]')
