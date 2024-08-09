@@ -3,9 +3,9 @@ name: Python CI
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   test:
@@ -29,3 +29,7 @@ jobs:
       run: |
         pytest
         coverage run -m pytest
+    - name: Upload coverage to Codecov
+      run: codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
